@@ -1,4 +1,5 @@
 import type { Agent } from '../types/agent';
+import { demoUrls } from '../config/demoUrls';
 
 // Single source of truth for the demo catalog. To add a new agent:
 // 1. Push a new object here with a unique `id`.
@@ -97,8 +98,12 @@ export const agents: Agent[] = [
     tags: ['Financeiro', 'Cartões', 'Autoatendimento'],
     image: '/agents/banking-support/card.png',
     flowImage: '/agents/banking-support/flow.svg',
-    capabilities: { chat: true, voice: true },
-    cognigy: { chatEndpoint: '', voiceEndpoint: '' },
+    capabilities: {
+      chat: true,
+      voice: true,
+      multimodal: true,
+    },
+    demoUrls: demoUrls.onebank,
     demoScript: {
       introduction: 'Use com bancos e fintechs — destaque a redução de chamadas transferidas para humano (deflection).',
       suggestedQuestions: [

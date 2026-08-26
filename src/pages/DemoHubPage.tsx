@@ -3,22 +3,6 @@ import { agents } from '../data/agents';
 import { AgentGrid } from '../components/agents/AgentGrid';
 import { IndustryFilter } from '../components/agents/IndustryFilter';
 import styles from './DemoHubPage.module.css';
-import { useEffect } from 'react';
-import { checkBackend } from '../services/api';
-
-export function BackendTest() {
-  useEffect(() => {
-    checkBackend()
-      .then((data) => {
-        console.log('Backend:', data);
-      })
-      .catch((error) => {
-        console.error('Erro:', error);
-      });
-  }, []);
-
-  return null;
-}
 
 export function DemoHubPage() {
   const [search, setSearch] = useState('');

@@ -19,12 +19,25 @@ export interface Agent {
   capabilities: {
     chat: boolean;
     voice: boolean;
+    multimodal?: boolean;
+  };
+
+  demoUrls?: {
+    /** URL opened when the Chat demo is launched. */
+    chat?: string;
+
+    /** URL opened when the Voice demo is launched. */
+    voice?: string;
+
+    /** URL opened when the Voice + Multimodal demo is launched. */
+    multimodal?: string;
   };
 
   cognigy?: {
-    /** Official Cognigy chat endpoint/URL used to initialize the webchat widget. */
+    /** Kept for compatibility with existing agent data/components. */
     chatEndpoint?: string;
-    /** Official Cognigy voice/WebRTC endpoint used to initialize the click-to-call widget. */
+
+    /** Kept for compatibility with existing agent data/components. */
     voiceEndpoint?: string;
   };
 

@@ -5,7 +5,6 @@ import { LoginPage } from './pages/LoginPage';
 import { DemoHubPage } from './pages/DemoHubPage';
 import { AgentPage } from './pages/AgentPage';
 import { NotFoundPage } from './pages/NotFoundPage';
-import { BackendTest } from './pages/DemoHubPage';
 
 export function App() {
   return (
@@ -18,8 +17,7 @@ export function App() {
           <ProtectedRoute>
             <AppShell>
               <DemoHubPage />
-              <BackendTest />
-            </AppShell>
+=            </AppShell>
           </ProtectedRoute>
         }
       />
