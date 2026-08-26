@@ -1,0 +1,72 @@
+@import './tokens.css';
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  background:
+    radial-gradient(1200px 600px at 10% -10%, rgba(124, 108, 240, 0.10), transparent 60%),
+    radial-gradient(900px 500px at 100% 0%, rgba(53, 211, 153, 0.06), transparent 55%),
+    var(--color-bg);
+  color: var(--color-text-primary);
+  -webkit-font-smoothing: antialiased;
+  transition: background-color var(--transition-base), color var(--transition-base);
+}
+
+h1,
+h2,
+h3,
+h4,
+p {
+  margin: 0;
+}
+
+/* Browsers apply their own UA color (usually black/"buttontext") to form controls
+   instead of inheriting from the page — without this, any button/input that doesn't
+   set an explicit `color` in its own module CSS renders black-on-dark and becomes
+   unreadable. Inheriting here is safe: component-level classes are more specific
+   and still win where they set their own color. */
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+  color: inherit;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+::selection {
+  background: var(--color-accent-soft);
+}
+
+/* Consistent focus ring for keyboard navigation across the app */
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-border-strong);
+  border-radius: 8px;
+}

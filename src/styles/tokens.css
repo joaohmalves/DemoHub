@@ -1,0 +1,89 @@
+:root {
+  /* Color: dark, slightly blue-neutral background with an electric-violet accent */
+  --color-bg: #0a0b10;
+  --color-bg-elevated: #101219;
+  --color-surface: #151824;
+  --color-surface-hover: #1b1f2e;
+  --color-border: #262b3a;
+  --color-border-strong: #363c50;
+
+  --color-text-primary: #f2f3f7;
+  --color-text-secondary: #a3a8bd;
+  --color-text-muted: #6b7086;
+
+  --color-accent: #7c6cf0;
+  --color-accent-hover: #8f81f5;
+  --color-accent-soft: rgba(124, 108, 240, 0.14);
+
+  --color-success: #35d399;
+  --color-success-soft: rgba(53, 211, 153, 0.14);
+  --color-warning: #f0b74c;
+  --color-warning-soft: rgba(240, 183, 76, 0.14);
+  --color-danger: #f0616c;
+  --color-danger-soft: rgba(240, 97, 108, 0.14);
+
+  /* Spacing scale (4px base) */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
+  --space-16: 64px;
+
+  /* Radius */
+  --radius-sm: 8px;
+  --radius-md: 10px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+
+  /* Elevation */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.35);
+  --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.45);
+  --shadow-glow: 0 0 0 1px rgba(124, 108, 240, 0.35), 0 8px 32px rgba(124, 108, 240, 0.18);
+
+  /* Motion */
+  --transition-fast: 150ms ease;
+  --transition-base: 220ms ease;
+
+  /* Typography */
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+  --color-header-bg: rgba(10, 11, 16, 0.7);
+}
+
+/* Light theme override — toggled via data-theme="light" on <html> (see ThemeToggle). Same
+   token names, so every component that already consumes var(--color-*) gets the light
+   palette for free with zero component-level changes. */
+[data-theme='light'] {
+  --color-bg: #f5f6fa;
+  --color-bg-elevated: #ffffff;
+  --color-surface: #ffffff;
+  --color-surface-hover: #eef0f7;
+  --color-border: #e1e4ee;
+  --color-border-strong: #cbd0e0;
+
+  --color-text-primary: #14161f;
+  --color-text-secondary: #4d5266;
+  --color-text-muted: #7d8299;
+
+  --color-accent: #6a5af0;
+  --color-accent-hover: #5847e0;
+  --color-accent-soft: rgba(106, 90, 240, 0.1);
+
+  --color-success: #1f9d6f;
+  --color-success-soft: rgba(31, 157, 111, 0.12);
+  --color-warning: #b8790f;
+  --color-warning-soft: rgba(184, 121, 15, 0.12);
+  --color-danger: #d43f4a;
+  --color-danger-soft: rgba(212, 63, 74, 0.12);
+
+  --shadow-sm: 0 1px 2px rgba(20, 22, 31, 0.06);
+  --shadow-md: 0 8px 24px rgba(20, 22, 31, 0.08);
+  --shadow-lg: 0 16px 48px rgba(20, 22, 31, 0.12);
+  --shadow-glow: 0 0 0 1px rgba(106, 90, 240, 0.25), 0 8px 32px rgba(106, 90, 240, 0.12);
+
+  --color-header-bg: rgba(255, 255, 255, 0.75);
+}

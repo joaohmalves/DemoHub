@@ -1,0 +1,44 @@
+.switch {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 52px;
+  height: 26px;
+  padding: 0 5px;
+  border-radius: 999px;
+  border: 1px solid var(--color-border-strong);
+  background: var(--color-surface);
+  cursor: pointer;
+  transition: background var(--transition-fast), border-color var(--transition-fast);
+}
+
+.switch:hover {
+  border-color: var(--color-accent);
+}
+
+.iconMoon,
+.iconSun {
+  font-size: 11px;
+  line-height: 1;
+  z-index: 1;
+  filter: grayscale(0.3);
+}
+
+.thumb {
+  position: absolute;
+  top: 50%;
+  left: 3px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  box-shadow: var(--shadow-sm);
+  transform: translateY(-50%);
+  transition: left var(--transition-base), background var(--transition-base);
+}
+
+.thumbLight {
+  left: calc(100% - 23px);
+  background: var(--color-warning);
+}

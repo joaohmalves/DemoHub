@@ -1,0 +1,72 @@
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.tabs {
+  display: inline-flex;
+  padding: 4px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  width: fit-content;
+}
+
+.tab {
+  height: 34px;
+  padding: 0 var(--space-4);
+  border-radius: var(--radius-sm);
+  border: none;
+  background: transparent;
+  color: var(--color-text-secondary);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background var(--transition-fast), color var(--transition-fast);
+}
+
+.tab:hover:not(:disabled) {
+  color: var(--color-text-primary);
+}
+
+.tab:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.tabActive {
+  background: var(--color-accent);
+  color: #fff;
+}
+
+.content {
+  animation: fadeIn var(--transition-base);
+}
+
+.idle {
+  min-height: 140px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: var(--space-6);
+  border-radius: var(--radius-lg);
+  border: 1px dashed var(--color-border-strong);
+  color: var(--color-text-muted);
+  font-size: 13.5px;
+  line-height: 1.6;
+}
+
+.idle strong {
+  color: var(--color-text-secondary);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="700" viewBox="0 0 1200 700">
+<rect width="1200" height="700" fill="#0d0f16"/>
+<g font-family="Inter, sans-serif" fill="#f2f3f7">
+<rect x="60" y="300" width="200" height="80" rx="10" fill="#151824" stroke="#f0b74c"/>
+<text x="90" y="345" font-size="18">Start</text>
+<rect x="360" y="150" width="220" height="80" rx="10" fill="#151824" stroke="#f0b74c"/>
+<text x="390" y="195" font-size="18">Intent Detection</text>
+<rect x="360" y="450" width="220" height="80" rx="10" fill="#151824" stroke="#f0b74c"/>
+<text x="390" y="495" font-size="18">Fallback / Handoff</text>
+<rect x="700" y="150" width="220" height="80" rx="10" fill="#151824" stroke="#f0b74c"/>
+<text x="730" y="195" font-size="18">Banking Support Flow</text>
+<rect x="960" y="300" width="200" height="80" rx="10" fill="#151824" stroke="#f0b74c"/>
+<text x="1000" y="345" font-size="18">Resolution</text>
+<path d="M260 340 L360 190" stroke="#f0b74c" fill="none"/>
+<path d="M260 340 L360 490" stroke="#f0b74c" fill="none"/>
+<path d="M580 190 L700 190" stroke="#f0b74c" fill="none"/>
+<path d="M920 190 L1000 300" stroke="#f0b74c" fill="none"/>
+</g>
+</svg>
