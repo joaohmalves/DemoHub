@@ -1,8 +1,6 @@
 import type { Agent } from '../../types/agent';
 import styles from './LiveDemoPanel.module.css';
 
-type DemoMode = 'chat' | 'voice' | 'multimodal';
-
 export function LiveDemoPanel({ agent }: { agent: Agent }) {
   const openDemo = (url?: string) => {
     if (!url) return;
