@@ -13,7 +13,7 @@ export async function login(
   password: string,
 ): Promise<Session | null> {
 
-  const email = `${username}@demo.internal`;
+  const email = `${username}`;
 
   const { data, error } = await supabase.auth.signInWithPassword({
     email,
