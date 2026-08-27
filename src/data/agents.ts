@@ -92,11 +92,11 @@ export const agents: Agent[] = [
     id: 'banking-support',
     name: 'Vertical Financeiro',
     industry: 'Financeiro',
-    shortDescription: 'Segunda via de boleto, limite de cartão e bloqueio de cartão perdido.',
+    shortDescription: 'Cartões, comparação de cartões, fatura, limite e extrato — com o agente enxergando a tela em tempo real.',
     description:
-      'Agente para instituições financeiras cobrindo as solicitações de maior volume no call center: segunda via de fatura, consulta e ajuste de limite, e bloqueio emergencial de cartão.',
-    tags: ['Financeiro', 'Cartões', 'Autoatendimento'],
-    image: '/agents/banking-support/card.png',
+      'Agente para instituições financeiras que atende as solicitações de maior volume no call center: informações sobre cartões, comparação entre cartões, segunda via de fatura, consulta de limite, extrato e compras recentes. O diferencial é a visão de página: enquanto o cliente fala, a interface muda em tempo real (abre o cartão certo, a comparação, o extrato) e o próprio agente sabe o que está na tela pra guiar o cliente ("clique aqui", "veja abaixo").',
+    tags: ['Financeiro', 'Cartões', 'Autoatendimento', 'Multimodal'],
+    image: '/agents/banking-support/logotipo-one-bank.png',
     flowImage: '/agents/banking-support/flow.svg',
     capabilities: {
       chat: true,
@@ -105,13 +105,42 @@ export const agents: Agent[] = [
     },
     demoUrls: demoUrls.onebank,
     demoScript: {
-      introduction: 'Use com bancos e fintechs — destaque a redução de chamadas transferidas para humano (deflection).',
+      introduction:
+        'Use com bancos e fintechs — destaque a redução de chamadas transferidas para humano (deflection) e a experiência multimodal: a tela do app OneBank reage em tempo real ao que o cliente fala, e o agente sabe o que está sendo mostrado na hora de responder.',
       suggestedQuestions: [
-        'Preciso da segunda via do meu boleto',
-        'Quero bloquear meu cartão, acho que perdi',
-        'Consigo aumentar meu limite?',
+        'Quero saber mais sobre os cartões de vocês',
+        'Quero pegar o cartão Gold',
+        'Pode comparar o cartão Black com o Platinum?',
+        'Preciso ver meu extrato',
+        'Qual o limite disponível no meu cartão?',
+        'Preciso da segunda via da minha fatura',
+        'Quais foram minhas últimas compras?',
       ],
       scenarios: [
+        {
+          title: 'Tópico de cartões (navegação por voz)',
+          objective: 'Mostrar a página mudando de tela sozinha, guiada pela intenção reconhecida na fala.',
+          prompt: 'Quero saber mais sobre cartões',
+          expectedBehavior: 'A tela muda automaticamente para a área de Cartões, sem o cliente tocar em nada.',
+        },
+        {
+          title: 'Detalhe de um cartão específico',
+          objective: 'Mostrar abertura de um cartão específico com seus benefícios, disparada pela fala.',
+          prompt: 'Quero pegar o cartão Gold',
+          expectedBehavior: 'Abre um card na tela com nome, número e todos os benefícios do cartão Gold.',
+        },
+        {
+          title: 'Comparação de cartões',
+          objective: 'Mostrar dois cartões lado a lado, abertos automaticamente pela fala do cliente.',
+          prompt: 'Pode comparar o Black com o Platinum?',
+          expectedBehavior: 'Abre um modal de comparação com os benefícios dos dois cartões lado a lado.',
+        },
+        {
+          title: 'Visão da página em tempo real',
+          objective: 'Mostrar que o agente sabe o que está na tela e consegue orientar o cliente ("onde eu clico").',
+          prompt: 'Tô vendo os dois cartões aqui, como eu fecho essa tela?',
+          expectedBehavior: 'O agente responde de forma específica à tela aberta (ex: "clique no X no topo da janela"), sem respostas genéricas.',
+        },
         {
           title: 'Bloqueio de cartão',
           objective: 'Mostrar priorização de um fluxo sensível/urgente com poucas perguntas.',
@@ -119,10 +148,16 @@ export const agents: Agent[] = [
           expectedBehavior: 'Confirma identidade rapidamente e bloqueia o cartão sem etapas desnecessárias.',
         },
         {
-          title: 'Segunda via de boleto',
+          title: 'Segunda via de boleto/fatura',
           objective: 'Fluxo de autoatendimento clássico, alto volume.',
-          prompt: 'Preciso da segunda via do boleto do mês passado',
-          expectedBehavior: 'Gera e envia o boleto atualizado, com nova data de vencimento se aplicável.',
+          prompt: 'Preciso da segunda via da fatura do mês passado',
+          expectedBehavior: 'Gera e envia a fatura atualizada, com nova data de vencimento se aplicável, e a tela abre a fatura correspondente.',
+        },
+        {
+          title: 'Extrato e compras recentes',
+          objective: 'Mostrar consulta de movimentações guiada por voz.',
+          prompt: 'Quero ver meu extrato',
+          expectedBehavior: 'A tela navega para o Extrato e lista as movimentações recentes.',
         },
       ],
     },
