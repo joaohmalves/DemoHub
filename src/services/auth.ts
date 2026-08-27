@@ -1,5 +1,5 @@
 import { users } from '../data/users';
-import { supabase } from './supabaseclient';
+import { supabase } from './supabaseClient';
 
 const SESSION_KEY = 'cognigy-demo-hub:session';
 
