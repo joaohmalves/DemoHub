@@ -1,4 +1,3 @@
-import { users } from '../data/users';
 import { supabase } from './supabaseClient';
 
 const SESSION_KEY = 'cognigy-demo-hub:session';
@@ -9,36 +8,35 @@ export interface Session {
   accessToken: string;
 }
 
-function emailForUsername(username: string): string | null {
-  const match = users.find((u) => u.username === username);
-  return match ? `${username}@demo.internal` : null;
-}
+export async function login(
+  username: string,
+  password: string,
+): Promise<Session | null> {
 
-function displayNameForUsername(username: string): string {
-  const match = users.find((u) => u.username === username);
-  return match?.displayName ?? username;
-}
+  const email = `${username}@demo.internal`;
 
-// sessionStorage (not localStorage) is deliberate: the session should not survive
-// closing the tab, which fits a shared/projected demo machine where the next
-// presenter should not inherit the previous one's login. See spec section 11.
-export async function login(username: string, password: string): Promise<Session | null> {
-  const email = emailForUsername(username);
-  if (!email) return null;
+  const { data, error } = await supabase.auth.signInWithPassword({
+    email,
+    password,
+  });
 
-  const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-
-  if (error || !data.session) {
+  if (error || !data.session || !data.user) {
+    console.error('[Auth] Login failed:', error);
     return null;
   }
 
   const session: Session = {
     username,
-    displayName: displayNameForUsername(username),
+    displayName:
+      data.user.user_metadata?.displayName ?? username,
     accessToken: data.session.access_token,
   };
 
-  sessionStorage.setItem(SESSION_KEY, JSON.stringify(session));
+  sessionStorage.setItem(
+    SESSION_KEY,
+    JSON.stringify(session),
+  );
+
   return session;
 }
 
@@ -49,7 +47,9 @@ export async function logout(): Promise<void> {
 
 export function getSession(): Session | null {
   const raw = sessionStorage.getItem(SESSION_KEY);
+
   if (!raw) return null;
+
   try {
     return JSON.parse(raw) as Session;
   } catch {

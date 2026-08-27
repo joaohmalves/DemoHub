@@ -17,7 +17,7 @@ export function App() {
           <ProtectedRoute>
             <AppShell>
               <DemoHubPage />
-=            </AppShell>
+            </AppShell>
           </ProtectedRoute>
         }
       />
