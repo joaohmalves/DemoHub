@@ -1,25 +1,49 @@
 import { users } from '../data/users';
+import { supabase } from './supabaseclient';
 
 const SESSION_KEY = 'cognigy-demo-hub:session';
 
 export interface Session {
   username: string;
   displayName: string;
+  accessToken: string;
+}
+
+function emailForUsername(username: string): string | null {
+  const match = users.find((u) => u.username === username);
+  return match ? `${username}@demo.internal` : null;
+}
+
+function displayNameForUsername(username: string): string {
+  const match = users.find((u) => u.username === username);
+  return match?.displayName ?? username;
 }
 
 // sessionStorage (not localStorage) is deliberate: the session should not survive
 // closing the tab, which fits a shared/projected demo machine where the next
 // presenter should not inherit the previous one's login. See spec section 11.
-export function login(username: string, password: string): Session | null {
-  const match = users.find((u) => u.username === username && u.password === password);
-  if (!match) return null;
+export async function login(username: string, password: string): Promise<Session | null> {
+  const email = emailForUsername(username);
+  if (!email) return null;
 
-  const session: Session = { username: match.username, displayName: match.displayName };
+  const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+
+  if (error || !data.session) {
+    return null;
+  }
+
+  const session: Session = {
+    username,
+    displayName: displayNameForUsername(username),
+    accessToken: data.session.access_token,
+  };
+
   sessionStorage.setItem(SESSION_KEY, JSON.stringify(session));
   return session;
 }
 
-export function logout(): void {
+export async function logout(): Promise<void> {
+  await supabase.auth.signOut();
   sessionStorage.removeItem(SESSION_KEY);
 }
 
