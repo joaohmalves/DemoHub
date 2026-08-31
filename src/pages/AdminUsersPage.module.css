@@ -3,50 +3,61 @@
 }
 
 .heading {
-  margin-bottom: var(--space-6);
+  margin-bottom: var(--space-8);
 }
 
 .title {
   margin: 0;
-  font-size: 28px;
-  font-weight: 700;
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  color: var(--color-text-primary);
 }
 
 .subtitle {
   margin: var(--space-2) 0 0;
+  font-size: 14px;
   color: var(--color-text-secondary);
 }
 
 .search {
-  margin-bottom: var(--space-5);
+  margin-bottom: var(--space-6);
 }
 
 .search input {
   width: 100%;
   max-width: 420px;
-  padding: 11px 14px;
+  height: 40px;
+  padding: 0 var(--space-4);
   border: 1px solid var(--color-border);
-  border-radius: 8px;
+  border-radius: var(--radius-md);
   background: var(--color-surface);
-  color: var(--color-text);
+  color: var(--color-text-primary);
+  font-size: 14px;
   outline: none;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.search input::placeholder {
+  color: var(--color-text-muted);
 }
 
 .search input:focus {
   border-color: var(--color-accent);
+  box-shadow: var(--shadow-glow);
 }
 
 .content {
   display: grid;
-  grid-template-columns: 360px minmax(0, 1fr);
-  gap: var(--space-5);
-  min-height: 500px;
+  grid-template-columns: 340px minmax(0, 1fr);
+  gap: var(--space-6);
+  align-items: start;
 }
 
 .userList {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: var(--space-2);
 }
 
 .userRow {
@@ -54,25 +65,27 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
-  padding: 14px;
+  gap: var(--space-4);
+  padding: var(--space-3) var(--space-4);
   border: 1px solid var(--color-border);
-  border-radius: 8px;
+  border-radius: var(--radius-md);
   background: var(--color-surface);
-  color: var(--color-text);
+  color: var(--color-text-primary);
   text-align: left;
   cursor: pointer;
-  transition:
-    border-color var(--transition-fast),
-    background var(--transition-fast);
+  transition: border-color var(--transition-fast), background var(--transition-fast),
+    box-shadow var(--transition-fast);
 }
 
 .userRow:hover {
-  border-color: var(--color-accent);
+  border-color: var(--color-border-strong);
+  background: var(--color-surface-hover);
 }
 
 .selected {
   border-color: var(--color-accent);
+  background: var(--color-accent-soft);
+  box-shadow: var(--shadow-glow);
 }
 
 .userRow div {
@@ -85,7 +98,13 @@
 }
 
 .userRow strong {
-  margin-bottom: 4px;
+  margin-bottom: 2px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .userRow div span {
@@ -98,29 +117,36 @@
 
 .role {
   flex-shrink: 0;
+  padding: 3px 8px;
+  border-radius: 999px;
   font-size: 11px;
   font-weight: 700;
   text-transform: uppercase;
+  letter-spacing: 0.02em;
 }
 
 .role-admin {
   color: var(--color-accent);
+  background: var(--color-accent-soft);
 }
 
 .role-sales {
   color: var(--color-success);
+  background: var(--color-success-soft);
 }
 
 .role-viewer {
   color: var(--color-text-secondary);
+  background: var(--color-surface-hover);
 }
 
 .editor {
   min-width: 0;
-  padding: 24px;
+  padding: var(--space-6);
   border: 1px solid var(--color-border);
-  border-radius: 8px;
+  border-radius: var(--radius-lg);
   background: var(--color-surface);
+  box-shadow: var(--shadow-sm);
 }
 
 .placeholder {
@@ -134,21 +160,26 @@
 }
 
 .placeholder h2 {
-  margin: 0 0 8px;
-  color: var(--color-text);
+  margin: 0 0 var(--space-2);
+  color: var(--color-text-primary);
+  font-size: 16px;
 }
 
 .placeholder p {
   margin: 0;
+  font-size: 14px;
 }
 
 .editorHeader {
-  padding-bottom: 20px;
+  padding-bottom: var(--space-4);
   border-bottom: 1px solid var(--color-border);
 }
 
 .editorHeader h2 {
-  margin: 0 0 5px;
+  margin: 0 0 4px;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--color-text-primary);
 }
 
 .editorHeader p {
@@ -158,65 +189,73 @@
 }
 
 .section {
-  padding: 20px 0;
+  padding: var(--space-4) 0;
   border-bottom: 1px solid var(--color-border);
 }
 
 .section:last-child {
   border-bottom: 0;
+  padding-bottom: 0;
 }
 
 .section h3 {
-  margin: 0 0 8px;
-  font-size: 15px;
+  margin: 0 0 var(--space-2);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--color-text-primary);
 }
 
 .sectionDescription {
-  margin: 0 0 14px;
+  margin: 0 0 var(--space-3);
   color: var(--color-text-secondary);
   font-size: 13px;
 }
 
 .roles {
   display: flex;
-  gap: 10px;
+  gap: var(--space-2);
 }
 
 .option {
   display: flex;
   align-items: center;
-  gap: 7px;
-  padding: 9px 12px;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
   border: 1px solid var(--color-border);
-  border-radius: 7px;
+  border-radius: var(--radius-sm);
+  color: var(--color-text-primary);
+  font-size: 13px;
   cursor: pointer;
+  transition: border-color var(--transition-fast), background var(--transition-fast);
 }
 
 .option:hover {
   border-color: var(--color-accent);
+  background: var(--color-surface-hover);
 }
 
 .optionsList {
   display: grid;
-  grid-template-columns: repeat(
-    auto-fit,
-    minmax(220px, 1fr)
-  );
-  gap: 8px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--space-2);
 }
 
 .checkbox {
   display: flex;
   align-items: center;
-  gap: 9px;
-  padding: 10px 12px;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
   border: 1px solid var(--color-border);
-  border-radius: 7px;
+  border-radius: var(--radius-sm);
+  color: var(--color-text-primary);
+  font-size: 13px;
   cursor: pointer;
+  transition: border-color var(--transition-fast), background var(--transition-fast);
 }
 
 .checkbox:hover {
   border-color: var(--color-accent);
+  background: var(--color-surface-hover);
 }
 
 .checkbox input,
@@ -225,17 +264,19 @@
 }
 
 .empty {
-  padding: 20px;
+  padding: var(--space-4);
   color: var(--color-text-secondary);
+  font-size: 13px;
 }
 
 .error {
-  margin-bottom: 16px;
-  padding: 12px 14px;
+  margin-bottom: var(--space-4);
+  padding: var(--space-3) var(--space-4);
   border: 1px solid var(--color-danger);
-  border-radius: 7px;
+  border-radius: var(--radius-sm);
   color: var(--color-danger);
-  background: var(--color-surface);
+  background: var(--color-danger-soft);
+  font-size: 13px;
 }
 
 @media (max-width: 900px) {
