@@ -40,7 +40,7 @@ export function Header() {
             {user?.role?.name === 'admin' && (
               <Button
                 variant="ghost"
-                onClick={() => navigate('/admin')}
+                onClick={() => navigate('/admin/users')}
               >
                 Administração
               </Button>
