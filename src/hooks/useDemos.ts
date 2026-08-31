@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { supabase } from '../lib/supabaseClient'; // ajuste o caminho se o seu client Supabase estiver em outro lugar
+import { supabase } from '../services/supabaseClient'; // ajuste o caminho se o seu client Supabase estiver em outro lugar
 import type { Agent } from '../types/agent';
 
 const API_URL = import.meta.env.VITE_API_URL as string;
