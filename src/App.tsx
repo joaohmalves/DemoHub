@@ -7,7 +7,6 @@ import { AdminRoute } from './components/AdminRoute';
 import { LoginPage } from './pages/LoginPage';
 import { DemoHubPage } from './pages/DemoHubPage';
 import { AgentPage } from './pages/AgentPage';
-import { AdminPage } from './pages/AdminPage';
 import { NotFoundPage } from './pages/NotFoundPage';
 import { AdminUsersPage } from './pages/AdminUsersPage';
 
@@ -69,7 +68,7 @@ export function App() {
           </ProtectedRoute>
         }
       />
-      
+
       {/* ================================================== */}
       {/* 404 */}
       {/* ================================================== */}
