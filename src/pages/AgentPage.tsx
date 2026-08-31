@@ -1,5 +1,5 @@
 import { Link, Navigate, useParams } from 'react-router-dom';
-import { getAgentById } from '../data/agents';
+import { useDemos } from '../hooks/useDemos';
 import { Badge } from '../components/common/Badge';
 import { LiveDemoPanel } from '../components/agent-workspace/LiveDemoPanel';
 import { FlowViewer } from '../components/agent-workspace/FlowViewer';
@@ -9,10 +9,15 @@ import styles from './AgentPage.module.css';
 
 export function AgentPage() {
   const { agentId } = useParams<{ agentId: string }>();
-  const agent = agentId ? getAgentById(agentId) : undefined;
+  const { agents, loading, error } = useDemos();
+  const agent = agentId ? agents.find((a) => a.id === agentId) : undefined;
 
-  // Unknown agent id (e.g. stale link) falls through to 404 instead of crashing.
-  if (!agent) {
+  if (loading) {
+    return <p>Carregando...</p>;
+  }
+
+  // Erro de auth/rede, ou id desconhecido/sem permissão: cai pra 404 em vez de quebrar.
+  if (error || !agent) {
     return <Navigate to="/404" replace />;
   }
 

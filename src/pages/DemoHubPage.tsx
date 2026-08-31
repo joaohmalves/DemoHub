@@ -1,16 +1,16 @@
 import { useMemo, useState } from 'react';
-import { agents } from '../data/agents';
+import { useDemos } from '../hooks/useDemos';
 import { AgentGrid } from '../components/agents/AgentGrid';
 import { IndustryFilter } from '../components/agents/IndustryFilter';
 import styles from './DemoHubPage.module.css';
 
 export function DemoHubPage() {
+  const { agents, loading, error } = useDemos();
   const [search, setSearch] = useState('');
   const [industry, setIndustry] = useState<string | null>(null);
 
-  const industries = useMemo(() => Array.from(new Set(agents.map((a) => a.industry))), []);
+  const industries = useMemo(() => Array.from(new Set(agents.map((a) => a.industry))), [agents]);
 
-  // Client-side only filtering, per spec section 5 (no backend needed for this scale).
   const filtered = useMemo(() => {
     const query = search.trim().toLowerCase();
     return agents.filter((agent) => {
@@ -22,7 +22,7 @@ export function DemoHubPage() {
         agent.tags.some((tag) => tag.toLowerCase().includes(query));
       return matchesIndustry && matchesQuery;
     });
-  }, [search, industry]);
+  }, [agents, search, industry]);
 
   return (
     <div>
@@ -39,7 +39,9 @@ export function DemoHubPage() {
         onSearchChange={setSearch}
       />
 
-      <AgentGrid agents={filtered} />
+      {loading && <p>Carregando demos...</p>}
+      {error && <p role="alert">{error}</p>}
+      {!loading && !error && <AgentGrid agents={filtered} />}
     </div>
   );
 }
