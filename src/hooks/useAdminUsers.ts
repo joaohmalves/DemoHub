@@ -1,3 +1,5 @@
+// src/hooks/useAdminUsers.ts
+
 import { useCallback, useEffect, useState } from 'react';
 import { supabase } from '../services/supabaseClient';
 
@@ -13,12 +15,29 @@ export interface AdminUser {
     name: string;
   } | null;
 
+  // Permissões adicionadas diretamente ao usuário.
   permissions: {
     id: string;
     name: string;
   }[];
 
+  // Permissões herdadas da role.
+  rolePermissions: {
+    id: string;
+    name: string;
+  }[];
+
+  // União das permissões da role + individuais.
+  effectivePermissions: {
+    id: string;
+    name: string;
+  }[];
+
   demos: string[];
+
+  // Admin/Sales = todas.
+  // Viewer = somente user_demos.
+  demoAccess: 'all' | 'assigned';
 
   createdAt: string;
   lastSignInAt: string | null;
@@ -29,9 +48,15 @@ export interface AdminOption {
   name: string;
 }
 
+export interface AdminRolePermission {
+  role_id: string;
+  permission_id: string;
+}
+
 export interface AdminOptions {
   roles: AdminOption[];
   permissions: AdminOption[];
+  rolePermissions: AdminRolePermission[];
   demos: AdminOption[];
 }
 
@@ -76,7 +101,7 @@ async function adminFetch(
         message = body.error;
       }
     } catch {
-      // Ignora erro ao tentar interpretar resposta
+      // Ignora erro ao tentar interpretar resposta.
     }
 
     throw new Error(message);
@@ -87,9 +112,11 @@ async function adminFetch(
 
 export function useAdminUsers() {
   const [users, setUsers] = useState<AdminUser[]>([]);
+
   const [options, setOptions] = useState<AdminOptions>({
     roles: [],
     permissions: [],
+    rolePermissions: [],
     demos: [],
   });
 
@@ -102,7 +129,10 @@ export function useAdminUsers() {
     setError(null);
 
     try {
-      const [usersData, optionsData] = await Promise.all([
+      const [
+        usersData,
+        optionsData,
+      ] = await Promise.all([
         adminFetch('/api/admin/users'),
         adminFetch('/api/admin/users/options'),
       ]);
@@ -236,28 +266,44 @@ export function useAdminUsers() {
 
       if (changes.roleId !== undefined) {
         requests.push(
-          adminFetch(`/api/admin/users/${userId}/role`, {
-            method: 'PUT',
-            body: JSON.stringify({ roleId: changes.roleId }),
-          }),
+          adminFetch(
+            `/api/admin/users/${userId}/role`,
+            {
+              method: 'PUT',
+              body: JSON.stringify({
+                roleId: changes.roleId,
+              }),
+            },
+          ),
         );
       }
 
       if (changes.permissionIds !== undefined) {
         requests.push(
-          adminFetch(`/api/admin/users/${userId}/permissions`, {
-            method: 'PUT',
-            body: JSON.stringify({ permissionIds: changes.permissionIds }),
-          }),
+          adminFetch(
+            `/api/admin/users/${userId}/permissions`,
+            {
+              method: 'PUT',
+              body: JSON.stringify({
+                permissionIds:
+                  changes.permissionIds,
+              }),
+            },
+          ),
         );
       }
 
       if (changes.demoIds !== undefined) {
         requests.push(
-          adminFetch(`/api/admin/users/${userId}/demos`, {
-            method: 'PUT',
-            body: JSON.stringify({ demoIds: changes.demoIds }),
-          }),
+          adminFetch(
+            `/api/admin/users/${userId}/demos`,
+            {
+              method: 'PUT',
+              body: JSON.stringify({
+                demoIds: changes.demoIds,
+              }),
+            },
+          ),
         );
       }
 
@@ -265,7 +311,9 @@ export function useAdminUsers() {
       await load();
     } catch (err) {
       setError(
-        err instanceof Error ? err.message : 'Erro ao salvar alterações',
+        err instanceof Error
+          ? err.message
+          : 'Erro ao salvar alterações',
       );
 
       throw err;
