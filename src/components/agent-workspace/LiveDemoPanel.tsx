@@ -1,125 +1,103 @@
 import { useState } from 'react';
 import type { Agent } from '../../types/agent';
-import { buildDemoUrl, type DemoType } from '../../services/demoHandoff';
+import { buildDemoUrl } from '../../services/demoHandoff';
+import { CognigyChatEmbed } from './CognigyChatEmbed';
+import { CognigyVoiceEmbed } from './CognigyVoiceEmbed';
 import styles from './LiveDemoPanel.module.css';
 
+type Tab = 'chat' | 'voice' | 'multimodal';
+
 export function LiveDemoPanel({ agent }: { agent: Agent }) {
-  const [loading, setLoading] = useState<DemoType | null>(null);
+  const [activeTab, setActiveTab] = useState<Tab | null>(null);
+  const [loadingMultimodal, setLoadingMultimodal] = useState(false);
   const [errorType, setErrorType] = useState<
     'generic' | 'session-expired' | null
   >(null);
 
-  const openDemo = async (
-    type: DemoType,
-    baseUrl?: string,
-  ) => {
-    if (!baseUrl) return;
+  const chatAvailable =
+    !!agent.capabilities.chat && !!agent.cognigy?.chatEndpoint;
+
+  const voiceAvailable =
+    !!agent.capabilities.voice && !!agent.cognigy?.voiceEndpoint;
+
+  const multimodalAvailable =
+    !!agent.capabilities.multimodal && !!agent.demoUrls?.multimodal;
+
+  // Chat e Voice abrem os widgets oficiais da Cognigy embutidos
+  // na própria página (cantos da tela) — sem popup, sem nova aba.
+  const selectEmbeddedTab = (tab: 'chat' | 'voice') => {
+    setErrorType(null);
+    setActiveTab((current) => (current === tab ? null : tab));
+  };
+
+  // Multimodal continua abrindo em uma nova aba, via handoff
+  // autenticado (o app OneBank precisa rodar isolado).
+  const openMultimodal = async () => {
+    if (!agent.demoUrls?.multimodal) return;
 
     setErrorType(null);
-    setLoading(type);
+    setLoadingMultimodal(true);
 
     try {
-      const url = await buildDemoUrl(baseUrl, type);
-
-      window.open(
-        url,
-        '_blank',
-        'noopener,noreferrer',
+      const url = await buildDemoUrl(
+        agent.demoUrls.multimodal,
+        'multimodal',
       );
+
+      window.open(url, '_blank', 'noopener,noreferrer');
     } catch (err) {
       console.error(
-        `[LiveDemoPanel] ${type} handoff failed`,
+        '[LiveDemoPanel] multimodal handoff failed',
         err,
       );
 
-      if (
-        err instanceof Error &&
-        err.message === 'SESSION_EXPIRED'
-      ) {
+      if (err instanceof Error && err.message === 'SESSION_EXPIRED') {
         setErrorType('session-expired');
       } else {
         setErrorType('generic');
       }
     } finally {
-      setLoading(null);
+      setLoadingMultimodal(false);
     }
   };
-
-  const chatAvailable =
-    agent.capabilities.chat &&
-    !!agent.demoUrls?.chat;
-
-  const voiceAvailable =
-    agent.capabilities.voice &&
-    !!agent.demoUrls?.voice;
-
-  const multimodalAvailable =
-    !!agent.capabilities.multimodal &&
-    !!agent.demoUrls?.multimodal;
 
   return (
     <div className={styles.panel}>
       <div className={styles.tabs}>
+        <button
+          className={`${styles.tab} ${
+            activeTab === 'chat' ? styles.tabActive : ''
+          }`}
+          disabled={!chatAvailable}
+          onClick={() => selectEmbeddedTab('chat')}
+        >
+          Chat
+        </button>
 
         <button
-          className={styles.tab}
-          disabled={!chatAvailable || loading !== null}
-          onClick={() =>
-            openDemo(
-              'chat',
-              agent.demoUrls?.chat,
-            )
-          }
+          className={`${styles.tab} ${
+            activeTab === 'voice' ? styles.tabActive : ''
+          }`}
+          disabled={!voiceAvailable}
+          onClick={() => selectEmbeddedTab('voice')}
         >
-          {loading === 'chat'
-            ? 'Abrindo...'
-            : 'Chat'}
+          Voice
         </button>
 
         <button
           className={styles.tab}
-          disabled={!voiceAvailable || loading !== null}
-          onClick={() =>
-            openDemo(
-              'voice',
-              agent.demoUrls?.voice,
-            )
-          }
+          disabled={!multimodalAvailable || loadingMultimodal}
+          onClick={openMultimodal}
         >
-          {loading === 'voice'
-            ? 'Abrindo...'
-            : 'Voice'}
+          {loadingMultimodal ? 'Abrindo...' : 'Voice + Multimodal ↗'}
         </button>
-
-        <button
-          className={styles.tab}
-          disabled={
-            !multimodalAvailable ||
-            loading !== null
-          }
-          onClick={() =>
-            openDemo(
-              'multimodal',
-              agent.demoUrls?.multimodal,
-            )
-          }
-        >
-          {loading === 'multimodal'
-            ? 'Abrindo...'
-            : 'Voice + Multimodal'}
-        </button>
-
       </div>
 
       <div className={styles.content}>
-
         {errorType === 'session-expired' && (
           <div className={styles.idle}>
             Sua sessão expirou.{' '}
-            <a
-              href="/login"
-              className={styles.link}
-            >
+            <a href="/login" className={styles.link}>
               Faça login novamente
             </a>
             .
@@ -128,18 +106,26 @@ export function LiveDemoPanel({ agent }: { agent: Agent }) {
 
         {errorType === 'generic' && (
           <div className={styles.idle}>
-            Não foi possível abrir a demo.
-            Tente novamente.
+            Não foi possível abrir a demo. Tente novamente.
           </div>
         )}
 
-        {!errorType && (
+        {!errorType && activeTab === 'chat' && (
+          <CognigyChatEmbed endpoint={agent.cognigy?.chatEndpoint ?? ''} />
+        )}
+
+        {!errorType && activeTab === 'voice' && (
+          <CognigyVoiceEmbed endpoint={agent.cognigy?.voiceEndpoint ?? ''} />
+        )}
+
+        {!errorType && activeTab === null && (
           <div className={styles.idle}>
-            Escolha uma das opções acima para
-            abrir a demo em uma nova aba.
+            Escolha <strong>Chat</strong> ou <strong>Voice</strong> para
+            abrir o widget aqui na página, ou{' '}
+            <strong>Voice + Multimodal</strong> para abrir a experiência
+            completa em uma nova aba.
           </div>
         )}
-
       </div>
     </div>
   );

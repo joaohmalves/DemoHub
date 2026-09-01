@@ -283,4 +283,73 @@
   .content {
     grid-template-columns: 1fr;
   }
+
+  .userList {
+    flex-direction: row;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: var(--space-2);
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .userRow {
+    flex-shrink: 0;
+    width: 240px;
+  }
+
+  .editor {
+    padding: var(--space-4);
+  }
+}
+
+@media (max-width: 640px) {
+  .heading {
+    margin-bottom: var(--space-6);
+  }
+
+  .title {
+    font-size: 22px;
+  }
+
+  .search input {
+    max-width: none;
+  }
+
+  .userList {
+    flex-direction: column;
+    overflow-x: visible;
+  }
+
+  .userRow {
+    width: 100%;
+  }
+
+  .editorHeader {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+
+  .roles {
+    flex-wrap: wrap;
+  }
+
+  .option {
+    flex: 1 1 auto;
+    justify-content: center;
+  }
+
+  .optionsList {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 420px) {
+  .editor {
+    padding: var(--space-3);
+  }
+
+  .userRow {
+    padding: var(--space-2) var(--space-3);
+  }
 }
