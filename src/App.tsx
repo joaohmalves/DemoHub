@@ -9,6 +9,8 @@ import { DemoHubPage } from './pages/DemoHubPage';
 import { AgentPage } from './pages/AgentPage';
 import { NotFoundPage } from './pages/NotFoundPage';
 import { AdminUsersPage } from './pages/AdminUsersPage';
+import { AdminFlowsPage } from './pages/AdminFlowsPage';
+import { AdminFlowFormPage } from './pages/AdminFlowFormPage';
 
 export function App() {
   return (
@@ -63,6 +65,32 @@ export function App() {
             <AdminRoute>
               <AppShell>
                 <AdminUsersPage />
+              </AppShell>
+            </AdminRoute>
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/admin/flows"
+        element={
+          <ProtectedRoute>
+            <AdminRoute>
+              <AppShell>
+                <AdminFlowsPage />
+              </AppShell>
+            </AdminRoute>
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/admin/flows/:flowId"
+        element={
+          <ProtectedRoute>
+            <AdminRoute>
+              <AppShell>
+                <AdminFlowFormPage />
               </AppShell>
             </AdminRoute>
           </ProtectedRoute>
