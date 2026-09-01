@@ -10,13 +10,24 @@ body,
   height: 100%;
 }
 
-body {
-  margin: 0;
-  font-family: var(--font-sans);
+html {
+  /* Painted on <html> (not <body>) and fixed to the viewport so the gradient
+     always sits in the same visual spot relative to what's on screen — instead
+     of being positioned relative to the full (possibly very tall, e.g. on a
+     long scroll or a higher browser zoom) document height, which made it drift
+     out of place and leave a visible flat-color seam lower on the page. */
   background:
     radial-gradient(1200px 600px at 10% -10%, rgba(124, 108, 240, 0.10), transparent 60%),
     radial-gradient(900px 500px at 100% 0%, rgba(53, 211, 153, 0.06), transparent 55%),
     var(--color-bg);
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  background: transparent;
   color: var(--color-text-primary);
   -webkit-font-smoothing: antialiased;
   transition: background-color var(--transition-base), color var(--transition-base);

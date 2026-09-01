@@ -220,6 +220,60 @@ export function useAdminUsers() {
     }
   };
 
+  const saveUser = async (
+    userId: string,
+    changes: {
+      roleId?: string;
+      permissionIds?: string[];
+      demoIds?: string[];
+    },
+  ) => {
+    setSaving(true);
+    setError(null);
+
+    try {
+      const requests: Promise<unknown>[] = [];
+
+      if (changes.roleId !== undefined) {
+        requests.push(
+          adminFetch(`/api/admin/users/${userId}/role`, {
+            method: 'PUT',
+            body: JSON.stringify({ roleId: changes.roleId }),
+          }),
+        );
+      }
+
+      if (changes.permissionIds !== undefined) {
+        requests.push(
+          adminFetch(`/api/admin/users/${userId}/permissions`, {
+            method: 'PUT',
+            body: JSON.stringify({ permissionIds: changes.permissionIds }),
+          }),
+        );
+      }
+
+      if (changes.demoIds !== undefined) {
+        requests.push(
+          adminFetch(`/api/admin/users/${userId}/demos`, {
+            method: 'PUT',
+            body: JSON.stringify({ demoIds: changes.demoIds }),
+          }),
+        );
+      }
+
+      await Promise.all(requests);
+      await load();
+    } catch (err) {
+      setError(
+        err instanceof Error ? err.message : 'Erro ao salvar alterações',
+      );
+
+      throw err;
+    } finally {
+      setSaving(false);
+    }
+  };
+
   return {
     users,
     options,
@@ -232,5 +286,6 @@ export function useAdminUsers() {
     updateRole,
     updatePermissions,
     updateDemos,
+    saveUser,
   };
 }

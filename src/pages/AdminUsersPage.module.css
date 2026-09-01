@@ -213,60 +213,223 @@
 
 .roles {
   display: flex;
+  flex-wrap: wrap;
   gap: var(--space-2);
 }
 
+/* Role selector: rendered as a segmented set of pill buttons. The native radio
+   input is visually hidden (not display:none, so it stays keyboard/focus
+   accessible) and .option acts as the actual button surface. */
 .option {
+  position: relative;
   display: flex;
   align-items: center;
   gap: var(--space-2);
-  padding: var(--space-2) var(--space-3);
+  height: 36px;
+  padding: 0 var(--space-4);
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-sm);
-  color: var(--color-text-primary);
+  border-radius: 999px;
+  background: var(--color-bg-elevated);
+  color: var(--color-text-secondary);
   font-size: 13px;
+  font-weight: 600;
   cursor: pointer;
-  transition: border-color var(--transition-fast), background var(--transition-fast);
+  transition: border-color var(--transition-fast), background var(--transition-fast),
+    color var(--transition-fast), box-shadow var(--transition-fast);
 }
 
 .option:hover {
-  border-color: var(--color-accent);
+  border-color: var(--color-border-strong);
+  color: var(--color-text-primary);
   background: var(--color-surface-hover);
+}
+
+.option:has(input:checked) {
+  border-color: var(--color-accent);
+  background: var(--color-accent-soft);
+  color: var(--color-accent);
+  box-shadow: var(--shadow-glow);
+}
+
+.option:has(input:focus-visible) {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+.option input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: 0;
+  opacity: 0;
+  pointer-events: none;
 }
 
 .optionsList {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  display: flex;
+  flex-wrap: wrap;
   gap: var(--space-2);
 }
 
+/* Permission / demo toggles: chip buttons with a checkmark that fades in
+   when selected, instead of a raw checkbox glued to the left edge. */
 .checkbox {
-  display: flex;
+  position: relative;
+  display: inline-flex;
   align-items: center;
   gap: var(--space-2);
-  padding: var(--space-2) var(--space-3);
+  height: 36px;
+  padding: 0 var(--space-4) 0 var(--space-3);
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-sm);
-  color: var(--color-text-primary);
+  border-radius: var(--radius-md);
+  background: var(--color-bg-elevated);
+  color: var(--color-text-secondary);
   font-size: 13px;
+  font-weight: 600;
   cursor: pointer;
-  transition: border-color var(--transition-fast), background var(--transition-fast);
+  transition: border-color var(--transition-fast), background var(--transition-fast),
+    color var(--transition-fast), box-shadow var(--transition-fast);
 }
 
 .checkbox:hover {
-  border-color: var(--color-accent);
+  border-color: var(--color-border-strong);
+  color: var(--color-text-primary);
   background: var(--color-surface-hover);
 }
 
-.checkbox input,
-.option input {
-  accent-color: var(--color-accent);
+.checkbox:has(input:checked) {
+  border-color: var(--color-accent);
+  background: var(--color-accent-soft);
+  color: var(--color-accent);
+}
+
+.checkbox:has(input:focus-visible) {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+.checkbox input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.checkMark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  border-radius: 5px;
+  border: 1.5px solid var(--color-border-strong);
+  background: transparent;
+  color: transparent;
+  flex-shrink: 0;
+  transition: border-color var(--transition-fast), background var(--transition-fast),
+    color var(--transition-fast);
+}
+
+.checkbox:has(input:checked) .checkMark {
+  border-color: var(--color-accent);
+  background: var(--color-accent);
+  color: #fff;
+}
+
+.checkMark svg {
+  width: 11px;
+  height: 11px;
 }
 
 .empty {
   padding: var(--space-4);
   color: var(--color-text-secondary);
   font-size: 13px;
+}
+
+.editorHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+
+.dirtyBadge {
+  flex-shrink: 0;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: var(--color-warning-soft);
+  color: var(--color-warning);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+/* Sticky bar pinned to the bottom of the editor card. Batches every pending
+   role/permission/demo change into a single save instead of firing a
+   request per click. */
+.saveBar {
+  position: sticky;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--space-3);
+  margin: var(--space-6) calc(var(--space-6) * -1) calc(var(--space-6) * -1);
+  padding: var(--space-4) var(--space-6);
+  border-top: 1px solid var(--color-border);
+  background: var(--color-surface);
+  border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+}
+
+.discardButton {
+  height: 40px;
+  padding: 0 var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: var(--color-text-primary);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color var(--transition-fast), background var(--transition-fast);
+}
+
+.discardButton:hover {
+  border-color: var(--color-border-strong);
+  background: var(--color-surface-hover);
+}
+
+.discardButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.saveButton {
+  height: 40px;
+  padding: 0 var(--space-6);
+  border: none;
+  border-radius: var(--radius-md);
+  background: var(--color-accent);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.saveButton:hover:not(:disabled) {
+  background: var(--color-accent-hover);
+  box-shadow: var(--shadow-glow);
+}
+
+.saveButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .error {
