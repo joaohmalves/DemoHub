@@ -2,7 +2,7 @@ import { FormEvent, useState } from 'react';
 import { useCurrentUser } from '../hooks/useCurrentUser';
 import { changeEmail, changePassword } from '../services/profile';
 import { Button } from '../components/common/Button';
-import styles from './ProfilePage.module.css';
+import styles from './profilePage.module.css';
 
 function isStrongPassword(password: string): boolean {
   return (
