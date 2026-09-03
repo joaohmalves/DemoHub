@@ -12,7 +12,7 @@ import { AdminUsersPage } from './pages/AdminUsersPage';
 import { AdminFlowsPage } from './pages/AdminFlowsPage';
 import { AdminFlowFormPage } from './pages/AdminFlowFormPage';
 
-import { ProfilePage } from './pages/ProfilePage';
+import { ProfilePage } from './pages/profilePage';
 
 export function App() {
   return (
