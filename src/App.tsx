@@ -12,6 +12,8 @@ import { AdminUsersPage } from './pages/AdminUsersPage';
 import { AdminFlowsPage } from './pages/AdminFlowsPage';
 import { AdminFlowFormPage } from './pages/AdminFlowFormPage';
 
+import { ProfilePage } from './pages/ProfilePage';
+
 export function App() {
   return (
     <Routes>
@@ -49,6 +51,21 @@ export function App() {
           <ProtectedRoute>
             <AppShell>
               <AgentPage />
+            </AppShell>
+          </ProtectedRoute>
+        }
+      />
+
+      {/* ================================================== */}
+      {/* PERFIL */}
+      {/* ================================================== */}
+
+      <Route
+        path="/profile"
+        element={
+          <ProtectedRoute>
+            <AppShell>
+              <ProfilePage />
             </AppShell>
           </ProtectedRoute>
         }
