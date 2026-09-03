@@ -177,7 +177,7 @@ export function ProfilePage() {
             </label>
 
             <label className={styles.field}>
-              <span className={styles.label}>Novo login (e-mail)</span>
+              <span className={styles.label}>Novo login</span>
               <input
                 className={styles.input}
                 type="email"
